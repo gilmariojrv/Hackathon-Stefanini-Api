@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import java.io.BufferedReader;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -45,6 +47,13 @@ public class EnderecoResource {
         return listPessoa.map(enderecos -> Response.ok(enderecos).build()).orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 
+
+    @GET
+    @Path("buscar/{cep}")
+    public Response obterCep(@PathParam("cep")String cep) {
+       return Response.ok(enderecoServico.buscarCep(cep)).build();
+    }
+    
     /**
      *
      * @param endereco

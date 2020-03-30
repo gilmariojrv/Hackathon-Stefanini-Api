@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -55,6 +57,7 @@ public class PerfilResource {
      */
     @POST
     public Response adicionarPerfil(@Valid Perfil perfil) {
+    	
         log.info("Adicionando perfils");
         if(perfilServico.validarPerfil(perfil)){
             return Response.ok(perfilServico.salvar(perfil)).build();

@@ -82,7 +82,7 @@ public class Pessoa implements Serializable{
 	/**
 	 * Mapeamento de Perfis Unidirecional
 	 */
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	@JoinTable(
 			name = "TB_PESSOA_PERFIL",
 			joinColumns = {@JoinColumn(name = "CO_SEQ_PESSOA")},

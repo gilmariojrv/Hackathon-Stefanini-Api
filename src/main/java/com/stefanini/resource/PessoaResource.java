@@ -3,7 +3,9 @@ package com.stefanini.resource;
 import com.stefanini.dto.ErroDto;
 import com.stefanini.dto.SucessoDto;
 import com.stefanini.exception.NegocioException;
+import com.stefanini.model.Perfil;
 import com.stefanini.model.Pessoa;
+import com.stefanini.servico.PerfilServico;
 import com.stefanini.servico.PessoaServico;
 
 import javax.inject.Inject;
@@ -27,6 +29,8 @@ public class PessoaResource {
 	 */
 	@Inject
 	private PessoaServico pessoaServico;
+	@Inject
+	private PerfilServico teste;
 	/**
 	 *
 	 */
@@ -54,6 +58,10 @@ public class PessoaResource {
 	 */
 	@POST
 	public Response adicionarPessoa(@Valid Pessoa pessoa) {
+		if(pessoa.getPerfils() == null) {
+			Perfil perfil = (Perfil) teste.getList().get();
+		}
+		
 		if(pessoaServico.validarPessoa(pessoa)){
 			return Response.ok(pessoaServico.salvar(pessoa)).build();
 		}
