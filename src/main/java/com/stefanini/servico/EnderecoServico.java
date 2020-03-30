@@ -6,7 +6,15 @@ import com.stefanini.model.Endereco;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
+
+import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +32,38 @@ public class EnderecoServico implements Serializable {
 	@Inject
 	private EnderecoDao dao;
 
+	
+	
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	
+	public static String buscarCep(String cep) {
+        String json;
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+        try {
+            URL url = new URL("http://viacep.com.br/ws/"+ cep +"/json");
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            StringBuilder jsonSb = new StringBuilder();
+
+            br.lines().forEach(l -> jsonSb.append(l.trim()));
+
+            json = jsonSb.toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
+        
+
+        return json;
+    }
+
+
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 
 	public Endereco salvar(@Valid Endereco entity) {
 		return dao.salvar(entity);

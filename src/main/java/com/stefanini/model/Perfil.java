@@ -3,7 +3,9 @@ package com.stefanini.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "TB_PERFIL")
@@ -32,18 +34,18 @@ public class Perfil implements Serializable {
      */
     @Column(name = "dt_hora_inclusao")
     @NotNull
-    private LocalDateTime dataHoraInclusao;
+    private Timestamp dataHoraInclusao;
     /**
      *
      */
     @Column(name = "dt_hora_alteracao")
     private LocalDateTime dataHoraAlteracao;
 
-//    /**
-//     * Mapeamento de Pessoa
-//     */
-//    @ManyToMany(mappedBy = "perfils")
-//    private Set<Pessoa> pessoas;
+    /**
+     * Mapeamento de Pessoa
+     */
+    @ManyToMany(mappedBy = "perfils")
+     private Set<Pessoa> pessoas;
 
 
     public Perfil() {
@@ -53,7 +55,7 @@ public class Perfil implements Serializable {
         this.id = id;
     }
 
-    public Perfil(@NotNull String nome, @NotNull String descricao, @NotNull LocalDateTime dataHoraInclusao, LocalDateTime dataHoraAlteracao) {
+    public Perfil(@NotNull String nome, @NotNull String descricao, @NotNull Timestamp dataHoraInclusao, LocalDateTime dataHoraAlteracao) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataHoraInclusao = dataHoraInclusao;
@@ -93,11 +95,11 @@ public class Perfil implements Serializable {
         this.descricao = descricao;
     }
 
-    public LocalDateTime getDataHoraInclusao() {
+    public Timestamp getDataHoraInclusao() {
         return dataHoraInclusao;
     }
 
-    public void setDataHoraInclusao(LocalDateTime dataHoraInclusao) {
+    public void setDataHoraInclusao(Timestamp dataHoraInclusao) {
         this.dataHoraInclusao = dataHoraInclusao;
     }
 
