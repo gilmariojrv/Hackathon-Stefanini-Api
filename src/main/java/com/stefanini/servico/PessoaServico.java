@@ -117,6 +117,13 @@ public class PessoaServico implements Serializable {
 		return dao.getList();
 	}
 
+	
+	public List<Pessoa> obterPessoaCheia() {
+		return dao.getPessoaCheia();
+	}
+
+
+	
 	/**
 	 * Buscar uma Pessoa pelo ID
 	 */

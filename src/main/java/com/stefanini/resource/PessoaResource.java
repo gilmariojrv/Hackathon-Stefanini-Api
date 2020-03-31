@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import java.util.List;
 import java.util.Optional;
@@ -42,12 +43,18 @@ public class PessoaResource {
 	 *
 	 * @return
 	 */
+//	@GET
+//	public Response obterPessoas() {
+//		log.info("Obtendo lista de pessoas");
+//		MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+//		Optional<List<Pessoa>> listPessoa = pessoaServico.getList();
+//		return listPessoa.map(pessoas -> Response.ok(pessoas).build()).orElseGet(() -> Response.status(Status.NOT_FOUND).build());
+//
+//	}
+	
 	@GET
-	public Response obterPessoas() {
-		log.info("Obtendo lista de pessoas");
-		MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-		Optional<List<Pessoa>> listPessoa = pessoaServico.getList();
-		return listPessoa.map(pessoas -> Response.ok(pessoas).build()).orElseGet(() -> Response.status(Status.NOT_FOUND).build());
+	public Response obterPessoasCheia() {
+	return Response.ok( pessoaServico.obterPessoaCheia()).build(); 
 
 	}
 

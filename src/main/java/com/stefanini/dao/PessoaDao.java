@@ -4,6 +4,8 @@ import com.stefanini.dao.abstracao.GenericDao;
 import com.stefanini.model.Pessoa;
 
 import javax.persistence.TypedQuery;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,5 +30,16 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 		q2.setParameter("email", email);
 		return q2.getResultStream().findFirst();
 	}
+	public List<Pessoa> getPessoaCheia (){
+
+		StringBuilder jpql = new StringBuilder();
+		
+		jpql.append("select distinct p from Pessoa p left join fetch p.enderecos left join fetch p.perfils ORDER BY p.nome");
+
+		TypedQuery<Pessoa> query = entityManager.createQuery(jpql.toString(),Pessoa.class);
+		
+		return query.getResultList();
+
+		}
 
 }
