@@ -31,10 +31,6 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 		q2.setParameter("email", email);
 		return q2.getResultStream().findFirst();
 	}
-	
-	
-	
-	
 	public List<Pessoa> getPessoaCheia (){
 
 		StringBuilder jpql = new StringBuilder();
