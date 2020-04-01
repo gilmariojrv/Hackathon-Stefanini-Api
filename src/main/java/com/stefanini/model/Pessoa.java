@@ -19,9 +19,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.junit.Ignore;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -31,7 +35,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @Table(name = "TB_PESSOA")
-
 public class Pessoa implements Serializable{
 
 	
@@ -53,12 +56,25 @@ public class Pessoa implements Serializable{
 	@Column(name = "NO_NOME")
 	private String nome;
 	
+	
+	@Column(name = "DS_CAMINHO_IMAGEM")
+	private String imagem;
+	
 	/**
 	 * Email da Pessoa
 	 */
 	@NotNull
 	@Column(name = "DS_EMAIL")
 	private String email;
+	public String getImagem() {
+		return imagem;
+	}
+
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
 	/**
 	 * Data de Nascimento 
 	 */

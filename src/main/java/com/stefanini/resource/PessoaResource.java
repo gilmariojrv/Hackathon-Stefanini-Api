@@ -68,13 +68,14 @@ public class PessoaResource {
 		if(pessoa.getPerfils() == null) {
 			Perfil perfil = (Perfil) teste.getList().get();
 		}
+
 		
 		if(pessoaServico.validarPessoa(pessoa)){
-			return Response.ok(pessoaServico.salvar(pessoa)).build();
+		
+		 return Response.ok(pessoaServico.salvar(pessoa)).build();
 		}
 		return Response.status(Status.METHOD_NOT_ALLOWED).entity(new ErroDto("email","email já existe", pessoa.getEmail())).build();
 	}
-
 
 	/**
 	 *

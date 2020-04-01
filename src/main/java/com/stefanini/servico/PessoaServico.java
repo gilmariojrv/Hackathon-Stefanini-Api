@@ -1,7 +1,13 @@
 package com.stefanini.servico;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +16,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
@@ -60,6 +67,7 @@ public class PessoaServico implements Serializable {
 	}
 	
 	pessoa.getEnderecos().clear();
+	pessoa.setImagem(decodeToImage(pessoa.getImagem(),pessoa.getEmail())) ;
 	Pessoa pessoaSalva = dao.salvar(pessoa);
 	
 	
@@ -70,6 +78,8 @@ public class PessoaServico implements Serializable {
 	enderecoServico.salvar(enderecoSalvo);
 	
 	}
+	
+	
 	
 	
 	
@@ -93,7 +103,7 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Atualizar o dados de uma pessoa
 	 */
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Pessoa atualizar(@Valid Pessoa entity) {
 		return dao.atualizar(entity);
 	}
@@ -122,7 +132,38 @@ public class PessoaServico implements Serializable {
 		return dao.getPessoaCheia();
 	}
 
-
+	
+	
+	
+	public String decodeToImage(String imageString, String email ) {
+		String url = "C:\\Users\\Torres\\Desktop\\hackaton-stefanini-api\\src\\imagens\\foto"+email+".jpg";
+		imageString = imageString.split(",")[1];
+        BufferedImage image = null;
+        byte[] imageByte;
+        try {
+     
+        	imageByte = Base64.getDecoder().decode(imageString.getBytes());
+            
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+           ImageIO.write(image, "JPG", new File(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return url ;
+    }
+	
+	
+//	public void salvarImg () {
+//		
+//		
+//		ImageIO.write(image, "JPG", new File("/src/imagens"));
+//		
+//	}
+	
+	
+	
 	
 	/**
 	 * Buscar uma Pessoa pelo ID

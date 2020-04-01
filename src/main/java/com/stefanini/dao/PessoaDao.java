@@ -24,12 +24,17 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 	 * @param email
 	 * @return
 	 */
+	
 	public Optional<Pessoa> buscarPessoaPorEmail(String email){
 		TypedQuery<Pessoa> q2 =
 				entityManager.createQuery(" select p from Pessoa p where p.email=:email", Pessoa.class);
 		q2.setParameter("email", email);
 		return q2.getResultStream().findFirst();
 	}
+	
+	
+	
+	
 	public List<Pessoa> getPessoaCheia (){
 
 		StringBuilder jpql = new StringBuilder();
