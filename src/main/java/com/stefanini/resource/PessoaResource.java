@@ -57,6 +57,20 @@ public class PessoaResource {
 	return Response.ok( pessoaServico.obterPessoaCheia()).build(); 
 
 	}
+	
+	
+	
+	
+	@GET
+	@Path ("imagem/{localImagem}")
+	@Produces("image/jpg")
+    public Response obterImagem(@PathParam ("localImagem")String localImagem){
+		return Response.ok(pessoaServico.urlImg(localImagem)).build();
+
+}
+	
+	
+	
 
 	/**
 	 *

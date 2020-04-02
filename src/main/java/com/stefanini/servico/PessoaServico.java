@@ -1,8 +1,11 @@
 package com.stefanini.servico;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -67,7 +71,11 @@ public class PessoaServico implements Serializable {
 	}
 	
 	pessoa.getEnderecos().clear();
-	pessoa.setImagem(decodeToImage(pessoa.getImagem(),pessoa.getEmail())) ;
+	
+	if(pessoa.getImagem() != null) {
+		pessoa.setImagem(decodeToImage(pessoa.getImagem())) ;	
+	}
+	
 	Pessoa pessoaSalva = dao.salvar(pessoa);
 	
 	
@@ -78,12 +86,7 @@ public class PessoaServico implements Serializable {
 	enderecoServico.salvar(enderecoSalvo);
 	
 	}
-	
-	
-	
-	
-	
-	
+
 		return pessoaSalva;
 	}
 	/**
@@ -104,8 +107,9 @@ public class PessoaServico implements Serializable {
 	 * Atualizar o dados de uma pessoa
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Pessoa atualizar(@Valid Pessoa entity) {
-		return dao.atualizar(entity);
+	public Pessoa atualizar(@Valid Pessoa pessoa) {
+		pessoa.setImagem(decodeToImage(pessoa.getImagem())) ;
+		return dao.atualizar(pessoa);
 	}
 
 	/**
@@ -135,32 +139,48 @@ public class PessoaServico implements Serializable {
 	
 	
 	
-	public String decodeToImage(String imageString, String email ) {
-		String url = "C:\\Users\\Torres\\Desktop\\hackaton-stefanini-api\\src\\imagens\\foto"+email+".jpg";
-		imageString = imageString.split(",")[1];
+	public String decodeToImage(String imagem ) {
+		imagem = imagem.split(",")[1];
+		
+		
+		
+		String url = "C:\\Users\\Torres\\Desktop\\hackaton-stefanini-api\\src\\imagens";
+		String url2 = "\\imagem"+ Math.random() + ".jpg";
+	     
         BufferedImage image = null;
         byte[] imageByte;
         try {
      
-        	imageByte = Base64.getDecoder().decode(imageString.getBytes());
+        	imageByte = Base64.getDecoder().decode(imagem.getBytes());
             
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
             image = ImageIO.read(bis);
             bis.close();
-           ImageIO.write(image, "JPG", new File(url));
+           ImageIO.write((RenderedImage)image, "jpg", new File(url+url2));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return url ;
+        return url + url2 ;
     }
 	
 	
-//	public void salvarImg () {
-//		
-//		
-//		ImageIO.write(image, "JPG", new File("/src/imagens"));
-//		
-//	}
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public FileInputStream urlImg (String localImg){
+
+		String local = "C:\\Users\\Torres\\Desktop\\hackaton-stefanini-api\\src\\imagens\\"+localImg;
+
+		FileInputStream file = null;
+
+		try{
+		   file = new FileInputStream(local);
+		}catch (FileNotFoundException e){
+		e.printStackTrace();}
+
+		return file;
+
+
+		}
+
 	
 	
 	
@@ -170,7 +190,27 @@ public class PessoaServico implements Serializable {
 	 */
 //	@Override
 	public Optional<Pessoa> encontrar(Long id) {
-		return dao.encontrar(id);
-	}
+		
+		
+		Optional<Pessoa> pessoa = dao.encontrar(id);
+
+		if (pessoa.get().getImagem() != null){
+
+		String urlPath = "http://localhost:8081/treinamento/api/pessoas/imagem/imagem0.";
+		String local = pessoa.get().getImagem();
+
+		String[] cocatenar = local.split(Pattern.quote("."));
+
+		pessoa.get().setImagem(urlPath + cocatenar[1] + "." + cocatenar[2]);
+
+		}
+
+		return pessoa;
+		}
+		
+		
+		
+		
+	
 
 }
