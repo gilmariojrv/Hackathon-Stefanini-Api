@@ -55,13 +55,7 @@ public class Perfil implements Serializable {
         this.id = id;
     }
 
-    public Perfil(@NotNull String nome, @NotNull String descricao, @NotNull Timestamp dataHoraInclusao, LocalDateTime dataHoraAlteracao) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.dataHoraInclusao = dataHoraInclusao;
-        this.dataHoraAlteracao = dataHoraAlteracao;
-//        this.pessoas = pessoas;
-    }
+ 
 
 //    public Set<Pessoa> getPessoas() {
 //        return pessoas;
@@ -119,7 +113,7 @@ public class Perfil implements Serializable {
                 ", descricao='" + descricao + '\'' +
                 ", dataHoraInclusao=" + dataHoraInclusao +
                 ", dataHoraAlteracao=" + dataHoraAlteracao +
-//                ", pessoas=" + pessoas +
+                 ", pessoas=" + pessoas +
                 '}';
     }
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -108,6 +109,7 @@ public class PessoaServico implements Serializable {
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Pessoa atualizar(@Valid Pessoa pessoa) {
+		if(Objects.nonNull(pessoa.getImagem()))
 		pessoa.setImagem(decodeToImage(pessoa.getImagem())) ;
 		return dao.atualizar(pessoa);
 	}
